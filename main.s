@@ -8,7 +8,7 @@ main:
 
 	org	0x100		    ; Main code starts here at address 0x100
 start:
-	movlw 0xFF
+	movlw 0xFF		    ; Hello my name is George! This is a push test!
 	movwf TRISD, A		    ; Port D all inputs
 	
 	movlw 	0x0
