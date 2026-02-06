@@ -2,7 +2,11 @@
 
 ; Assembly source line config statements
 
+<<<<<<< HEAD
 	#include <xc.inc>
+=======
+#include <xc.inc>
+>>>>>>> 13ebb579b21d97845337382b9bae5a9d2c42e935
 
 ; CONFIG1L
   CONFIG  RETEN = ON            ; VREG Sleep Enable bit (Enabled)
