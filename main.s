@@ -1,5 +1,5 @@
 	#include <xc.inc>
-	
+
 psect	code, abs
 main:
 	org 0x0
