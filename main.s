@@ -3,6 +3,10 @@
 psect	code, abs
 main:
 	org 0x0
+	
+	movlw 0x0
+	movwf TRISC, A	; Make Port C and output
+	
 	goto	setup
 	
 	org 0x100		    ; Main code starts here at address 0x100
@@ -33,6 +37,7 @@ start:
 loop:
         tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
+	movff TABLAT, PORTC
 	decfsz	counter, A	; count down to zero
 	bra	loop		; keep going until finished
 	
