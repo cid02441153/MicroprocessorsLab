@@ -4,8 +4,9 @@ psect	code, abs
 main:
 	org 0x0
 	
-	movlw 0x0
+	movlw 0x00
 	movwf TRISC, A	; Make Port C and output
+	movff TRISC, PORTC
 	
 	goto	setup
 	
@@ -18,8 +19,7 @@ setup:
 	goto	start
 	; ******* My data and where to put it in RAM *
 myTable:
-	db	'T','h','i','s',' ','i','s',' ','j','u','s','t'
-	db	' ','s','o','m','e',' ','d','a','t','a'
+	db	0x88, 0x44, 0x22, 0x11, 0x22, 0x44
 	myArray EQU 0x400	; Address in RAM for data
 	counter EQU 0x10	; Address of counter variable
 	align	2		; ensure alignment of subsequent instructions 
@@ -32,15 +32,35 @@ start:
 	movwf	TBLPTRH, A	; load high byte to TBLPTRH
 	movlw	low(myTable)	; address of data in PM
 	movwf	TBLPTRL, A	; load low byte to TBLPTRL
-	movlw	22		; 22 bytes to read
+	movlw	6		; 22 bytes to read
 	movwf 	counter, A	; our counter register
 loop:
         tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
-	movff TABLAT, PORTC
+	movff	TABLAT, PORTC
 	decfsz	counter, A	; count down to zero
+	movlw high(0xFFFF) 
+	movwf 0x10, A 
+	movlw low(0xFFFF) 
+	movwf 0x11, A 
+	call Delay 
+	call Delay
+	call Delay 
+	call Delay
+	call Delay 
+	call Delay 
+	
 	bra	loop		; keep going until finished
 	
-	goto	0
+; Delay Subroutine
+Delay: 
+    movlw 0x00 ;move literal 0 to working reg
+Dloop: 
+    decf 0x11, f, A ; decrements lower byte by 0x11
+    subwfb 0x10, f, A ; subtract w and borrow from f
+    bc Dloop ; if carry bit, loop again
+    return	
+	
+    goto	0
 
 	end	main
