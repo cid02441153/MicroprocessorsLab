@@ -3,11 +3,42 @@
 psect	code, abs
 	
 main:    
-    call    SPI_MasterInit    
+    call    SPI_MasterInit
 
-loop:
+setup:
     
-    call    Update_Shift_Register
+    movlw 0x00
+    movwf TRISE, A
+    
+    bcf CFGS
+    bsf EEPGD
+    goto start
+    
+myTable:
+    db 0xF0, 0x10, 0xF0, 0x10, 0xF0, 0x10, 0xF0, 0x10
+    
+    myArray EQU 0x400
+    counter EQU 0x20
+    align 2
+
+start:
+    lfsr    0, myArray
+    movlw   low highword(myTable)
+    movwf   TBLPTRU, A
+    movlw   high(myTable)
+    movwf   TBLPTRH, A
+    movlw   low(myTable)
+    movwf   TBLPTRL, A
+    movlw 8
+    movwf counter, A
+    
+loop:
+
+    tblrd*+
+    movff   TABLAT, POSTINC0
+    movf    TABLAT, W, A
+    movwf   PORTE, A
+    call    SPI_MasterTransmit
     
     ; Delay
     movlw low highword(0xFFFFFF)
@@ -18,8 +49,13 @@ loop:
     movwf 0x10, A
     call Delay
     
+    decfsz  counter, A
     bra     loop
+    
+    
+    goto 0
 
+    
 Delay:
     movlw 0x00
 DLoop:
@@ -28,14 +64,6 @@ DLoop:
     subwfb 0x12, f, A
     bc DLoop
     return
-    
-Update_Shift_Register:
-    movlw   0xFF              ; The data you want to display
-    call    SPI_MasterTransmit ; This sends the 8 bits
-    
-    return
-    
-    goto    0
     
 SPI_MasterInit:
     bcf	    CKE2
@@ -56,4 +84,4 @@ SPI_MasterInit:
     bcf	    PIR2, 5
     return
 	
-    end	    main
+end main
