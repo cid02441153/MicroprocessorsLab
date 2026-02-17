@@ -15,7 +15,7 @@ setup:
     goto start
     
 myTable:
-    db 0xF0, 0x10, 0xF0, 0x10, 0xF0, 0x10, 0xF0, 0x10
+    db 0xFF, 0x7E, 0x3C, 0x18, 0x00, 0x18, 0x3C, 0x7E
     
     myArray EQU 0x400
     counter EQU 0x20
@@ -41,11 +41,11 @@ loop:
     call    SPI_MasterTransmit
     
     ; Delay
-    movlw low highword(0xFFFFFF)
+    movlw low highword(0x0FFFFF)
     movwf 0x12, A
-    movlw high(0xFFFFFF)
+    movlw high(0x0FFFFF)
     movwf 0x11, A
-    movlw low(0xFFFFFF)
+    movlw low(0x0FFFFF)
     movwf 0x10, A
     call Delay
     
