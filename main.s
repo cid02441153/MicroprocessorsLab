@@ -39,9 +39,13 @@ loop:
     ; Read data from accelerometer for X / Y rotation
     ; Store X / Y rotation in memory
     ; Output to Ports E and F
-    
-    
     call    Read_Accel
+    
+    movf ACCEL_X_L, W, A
+    movwf PORTE, A
+    
+    movf ACCEL_Y_L, W, A
+    movwf PORTF, A
     
     ; Delay
     call Delay
