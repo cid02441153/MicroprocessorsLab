@@ -12,7 +12,7 @@ SPI_MasterInit: ; Initialises SPI (setting portD4 and portD6, etc)
     
     bcf	    TRISD, PORTD_SDO2_POSN, A ; Set SDO2 to output
     bcf	    TRISD, PORTD_SCK2_POSN, A ; Set SCK2 to output
-    bsf	    TRISD, PORTD_SDI_POSN, A ; Set SDI to input
+    bsf	    TRISD, 5, A ; Set SDI to input
     return
    
  SPI_MasterTransmit: ; Sends what is stored in working register down PortD4

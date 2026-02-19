@@ -2,9 +2,9 @@
 
 global Read_Accel, Setup_Accel
 
-extern ACCEL_X_H, ACCEL_X_L
-extern ACCEL_Y_H, ACCEL_Y_L
-extern SPI_MasterTransmit
+extrn ACCEL_X_H, ACCEL_X_L
+extrn ACCEL_Y_H, ACCEL_Y_L
+extrn SPI_MasterTransmit
 
 psect	accel_code,class=CODE
 	

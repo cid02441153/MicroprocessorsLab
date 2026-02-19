@@ -1,6 +1,7 @@
 	#include <xc.inc>
 	
 global Setup_Accel, Read_Accel, SPI_MasterInit
+global ACCEL_X_H, ACCEL_X_L, ACCEL_Y_H, ACCEL_Y_L
 	
 psect	udata_acs ; Reserve data in access RAM
 ACCEL_X_H: ds 1
