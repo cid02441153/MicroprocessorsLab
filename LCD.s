@@ -1,6 +1,7 @@
 #include <xc.inc>
 
-global  LCD_Setup, LCD_Write_Message, LCD_Clear, LCD_Move_Cursor, LCD_Line2
+global  LCD_Setup, LCD_Write_Message, LCD_Clear, LCD_Move_Cursor, LCD_Line2, LCD_Write_Character
+extrn KeyPad_Read
 
 psect	udata_acs   ; named variables in access ram
 LCD_cnt_l:	ds 1   ; reserve 1 byte for variable LCD_cnt_l
@@ -45,6 +46,17 @@ LCD_Setup:
 	movlw	10		; wait 40us
 	call	LCD_delay_x4us
 	return
+	
+LCD_Write_Character: ; Character stored in W
+	call LCD_Send_Byte_D
+	call wait_release
+	return
+	
+wait_release:
+	call    KeyPad_Read
+	tstfsz  WREG            ; Is a key still being held?
+	bra     wait_release    ; Yes, keep waiting
+	return                  ; No, key released, go back to loop
 
 LCD_Write_Message:	    ; Message stored at FSR2, length stored in W
 	movwf   LCD_counter, A
