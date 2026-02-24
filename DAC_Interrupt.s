@@ -32,8 +32,8 @@ DAC_Setup:
 	return
 	
 timer_reset: ; Set the timer to a given number rather than 0
-    ; high byte first
-    movlw 0x2F
+    ; Value of 0x63AC -> 0xFFFF -> 20ms cycle
+    movlw 0x63
     movwf TMR0H
     
     movlw 0xAC
